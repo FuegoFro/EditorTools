@@ -54,7 +54,7 @@ public class KerboScriptFile extends PsiFileBase implements KerboScriptScope, Ke
 
     @Nullable
     public KerboScriptFile findFile(String name) {
-        PsiDirectory directory = getContainingDirectory();
+        PsiDirectory directory = getOriginalFile().getContainingDirectory();
         if (directory == null) return null;
         for (PsiFile file : directory.getFiles()) {
             if (file instanceof KerboScriptFile) {

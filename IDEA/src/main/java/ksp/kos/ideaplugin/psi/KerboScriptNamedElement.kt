@@ -67,7 +67,7 @@ interface KerboScriptNamedElement : KerboScriptBase, PsiSelfResolvable {
     }
 }
 
-private fun isDeclarationVisibleToUsage(usage: PsiElement, declaration: KerboScriptNamedElement?): Boolean {
+fun isDeclarationVisibleToUsage(usage: PsiElement, declaration: KerboScriptNamedElement?): Boolean {
     if (declaration?.type?.occurrenceType != OccurrenceType.LOCAL) {
         // Consider globals to always be visible
         return true
