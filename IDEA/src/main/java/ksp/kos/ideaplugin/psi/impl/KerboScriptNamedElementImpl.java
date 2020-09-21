@@ -68,9 +68,7 @@ public class KerboScriptNamedElementImpl extends ASTWrapperPsiElement implements
 
     private void register() {
         ReferenceType type = cache.getScope().type;
-        if (type.getOccurrenceType().isDeclaration()) {
-            getScope().getCachedScope().register(this);
-        } else if (type.getType() == ReferableType.FILE) {
+        if (type.getOccurrenceType().isDeclaration() || type.getType() == ReferableType.FILE) {
             getScope().getCachedScope().register(this);
         }
     }
