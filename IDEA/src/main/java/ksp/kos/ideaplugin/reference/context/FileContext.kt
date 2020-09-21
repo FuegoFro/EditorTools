@@ -7,6 +7,7 @@ import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.PsiManager
 import ksp.kos.ideaplugin.KerboScriptFile
 import ksp.kos.ideaplugin.dataflow.ReferenceFlow
+import ksp.kos.ideaplugin.getBuiltinKsFile
 import ksp.kos.ideaplugin.reference.OccurrenceType
 import ksp.kos.ideaplugin.reference.ReferableType
 import ksp.kos.ideaplugin.reference.Reference
@@ -67,32 +68,8 @@ abstract class FileContext protected constructor(
     }
 
     class BuiltinResolver : ReferenceResolver<LocalContext> {
-        override fun resolve(context: LocalContext, reference: Reference, createAllowed: Boolean): Duality? {
-            if (ksFile == null) {
-                tryGetBuiltinKsFile()
-            }
-            return ksFile?.semantics?.findLocalDeclaration(reference, OccurrenceType.GLOBAL)
-        }
-
-        companion object {
-            private var ksFile: KerboScriptFile? = null
-
-            private fun URL.toVirtualFile(): VirtualFile? {
-                val urlStr = VfsUtilCore.convertFromUrl(this)
-                return VirtualFileManager.getInstance().findFileByUrl(urlStr)
-            }
-
-            private fun tryGetBuiltinKsFile() {
-                val builtinVirtualFile = BuiltinResolver::class.java.classLoader
-                    .getResource("builtin.ks")
-                    ?.toVirtualFile()
-                    ?: return
-
-                val project = ProjectManager.getInstance().defaultProject
-                val psiFile = PsiManager.getInstance(project).findFile(builtinVirtualFile)
-                ksFile = psiFile as? KerboScriptFile
-            }
-        }
+        override fun resolve(context: LocalContext, reference: Reference, createAllowed: Boolean): Duality? =
+            getBuiltinKsFile()?.semantics?.findLocalDeclaration(reference, OccurrenceType.GLOBAL)
     }
 
     private class VirtualResolver : ParentResolver() {
