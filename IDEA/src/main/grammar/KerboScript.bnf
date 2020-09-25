@@ -231,7 +231,9 @@ copy_stmt      ::= COPY expr (FROM | TO) expr EOI
 rename_stmt    ::= RENAME (VOLUME | FILE)? expr TO expr EOI
 delete_stmt    ::= DELETE expr (FROM expr)? EOI
 edit_stmt      ::= EDIT expr EOI
-run_stmt       ::= RUN (ONCE)? (file_ident|STRING) (BRACKETOPEN arglist BRACKETCLOSE)? (ON expr)? EOI
+run_stmt       ::= RUN (ONCE)? (file_ident|STRING) (BRACKETOPEN arglist BRACKETCLOSE)? (ON expr)? EOI {
+    generateTokenAccessors=true
+}
 runpath_stmt   ::= RUNPATH BRACKETOPEN expr (COMMA arglist)? BRACKETCLOSE EOI
 runoncepath_stmt ::= RUNONCEPATH BRACKETOPEN expr (COMMA arglist)? BRACKETCLOSE EOI
 compile_stmt   ::= COMPILE expr (TO expr)? EOI

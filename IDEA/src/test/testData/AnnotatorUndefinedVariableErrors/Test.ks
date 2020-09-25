@@ -11,9 +11,9 @@ LOCK lock_a TO 1.
 
 RUN Imported1.
 // TODO - Handle RUN statements with strings and directories
-// RUN "imported_inner/Imported2".
+RUN "imported_inner/Imported2".
 RUN ONCE Imported3.
-// RUN ONCE "imported_inner/Imported4".
+RUN ONCE "imported_inner/Imported4".
 
 FUNCTION func_a {
     DECLARE PARAMETER param_should_not_show_up_1.
@@ -83,7 +83,9 @@ FUNCTION func_b {
         PRINT local_top_level_b.
         PRINT lock_a.
         PRINT imported_global_1.
+        PRINT imported_global_2.
         PRINT imported_global_3.
+        PRINT imported_global_4.
         PRINT imported_global_5.
         PRINT imported_global_6.
         PRINT imported_global_func.
@@ -124,9 +126,6 @@ FUNCTION func_b {
         // Should not be okay
         PRINT <error descr="Unknown identifier `imported_local`">imported_local</error>.
         PRINT <error descr="Unknown identifier `imported_local_func`">imported_local_func</error>.
-        // TODO - Handle RUN statements with strings and directories
-        PRINT <error descr="Unknown identifier `Imported2`">Imported2</error>.
-        PRINT <error descr="Unknown identifier `Imported4`">Imported4</error>.
         PRINT <error descr="Unknown identifier `param_should_not_show_up_1`">param_should_not_show_up_1</error>.
         PRINT <error descr="Unknown identifier `param_should_not_show_up_2`">param_should_not_show_up_2</error>.
         PRINT <error descr="Unknown identifier `local_should_not_show_up`">local_should_not_show_up</error>.
