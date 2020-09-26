@@ -7,6 +7,7 @@ import ksp.kos.ideaplugin.reference.context.FileContextResolver;
 import ksp.kos.ideaplugin.reference.context.FileDuality;
 import ksp.kos.ideaplugin.reference.context.PsiFileDuality;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created on 08/10/16.
@@ -32,7 +33,7 @@ public class PsiFileResolver implements FileContextResolver {
     }
 
     @Override
-    public FileDuality resolveFile(String name) {
+    public @Nullable FileDuality resolveFile(String name) {
         KerboScriptFile file = anyFile.resolveFile(name);
         if (file!=null) {
             return new PsiFileDuality(file);

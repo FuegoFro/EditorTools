@@ -1,9 +1,17 @@
 package ksp.kos.ideaplugin.reference.context
 
+import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.psi.PsiManager
 import ksp.kos.ideaplugin.KerboScriptFile
 import ksp.kos.ideaplugin.dataflow.ReferenceFlow
+import ksp.kos.ideaplugin.getBuiltinKsFile
+import ksp.kos.ideaplugin.reference.OccurrenceType
 import ksp.kos.ideaplugin.reference.ReferableType
 import ksp.kos.ideaplugin.reference.Reference
+import java.net.URL
 
 /**
  * Created on 08/10/16.
@@ -52,9 +60,16 @@ abstract class FileContext protected constructor(
             context.getDeclarations(ReferableType.FILE)
                 .values
                 .mapNotNull { run ->
-                    fileContextResolver.resolveFile(run.name)?.semantics?.findLocalDeclaration(reference)
+                    fileContextResolver.resolveFile(run.name)
+                        ?.semantics
+                        ?.findLocalDeclaration(reference, OccurrenceType.GLOBAL)
                 }
                 .firstOrNull()
+    }
+
+    class BuiltinResolver : ReferenceResolver<LocalContext> {
+        override fun resolve(context: LocalContext, reference: Reference, createAllowed: Boolean): Duality? =
+            getBuiltinKsFile()?.semantics?.findLocalDeclaration(reference, OccurrenceType.GLOBAL)
     }
 
     private class VirtualResolver : ParentResolver() {
@@ -70,6 +85,7 @@ abstract class FileContext protected constructor(
                 LocalResolver(),
                 VirtualResolver(),
                 ImportsResolver(fileResolver),
+                BuiltinResolver(), // Make sure this is last, to allow shadowing of builtin values
             )
     }
 }
