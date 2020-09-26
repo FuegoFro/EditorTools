@@ -6,16 +6,16 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
-import ksp.kos.ideaplugin.psi.KerboScriptAtom
-import ksp.kos.ideaplugin.psi.KerboScriptNamedElement
+import com.intellij.psi.util.parentOfType
+import ksp.kos.ideaplugin.psi.*
 
 class KerboScriptAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        if (!ApplicationManager.getApplication().isUnitTestMode) {
-            // Until this is good enough, don't turn it on for general use; right now it's too noisy.
-            return
-        }
-        if (element !is KerboScriptAtom) {
+        // if (!ApplicationManager.getApplication().isUnitTestMode) {
+        //     // Until this is good enough, don't turn it on for general use; right now it's too noisy.
+        //     return
+        // }
+        if (element !is KerboScriptAtom || element.parentOfType<KerboScriptSuffixTrailer>() != null) {
             return
         }
 

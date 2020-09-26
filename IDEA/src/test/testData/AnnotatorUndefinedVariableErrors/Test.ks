@@ -120,6 +120,9 @@ FUNCTION func_b {
         // Some builtin globals
         PRINT TIME.
         PRINT SHIP.
+        // Ignores suffixes for now
+        PRINT SHIP:ALTITUDE.
+        PRINT local_a:FLAMEOUT.
         // Should not be okay
         PRINT <error descr="Unknown identifier `imported_local`">imported_local</error>.
         PRINT <error descr="Unknown identifier `imported_local_func`">imported_local_func</error>.

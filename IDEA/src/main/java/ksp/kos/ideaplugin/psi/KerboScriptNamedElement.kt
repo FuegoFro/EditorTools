@@ -102,11 +102,8 @@ private inline fun <reified T : PsiElement> doesTypeExistBetweenCurrentAndCloses
         otherAncestors.zip(currentAncestors).indexOfLast { (a, b) -> a == b }
 
     if (closestCommonAncestorIndex == -1) {
-        throw IllegalStateException(
-            "Unable to find common ancestor: " +
-                    " current=$current@${current.containingFile.name}:${current.textRange} and " +
-                    " other=$other@${other.containingFile.name}:${other.textRange}"
-        )
+        // Not even in same file, so "nothing" exists between them.
+        return false
     }
 
     val closestTypeIndex = currentAncestors.indexOfLast { it is T }
